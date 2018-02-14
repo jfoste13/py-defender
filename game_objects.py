@@ -92,6 +92,8 @@ class Asteroid(pygame.sprite.Sprite):
         self.size = size
         self.mass = self.size / game.asteroid_size_range[1]
         self.ground_contact = False
+        self.laser_contact = False
+        self.destroyed = False
         self.velocity = 0
         self.terminal_velocity = -1 * (size / 16)
         self.acceleration = 0
@@ -103,6 +105,12 @@ class Asteroid(pygame.sprite.Sprite):
         self.rect.y = helper.altitudeToPixels(self.altitude) - self.size
 
     def update(self):
+        if self.size <= 0:
+            self.destroyed = True
+            self.size = .0001
+        self.image = pygame.Surface([self.size, self.size])
+
+        self.image.fill(self.color)
         self.altitude = helper.update_altitude(self.altitude, self.velocity, self.game.ground_level)
         self.velocity = helper.update_velocity(self.velocity, self.acceleration, self.terminal_velocity)
         self.acceleration = helper.update_acceleration(self.game.gravity, self.mass)

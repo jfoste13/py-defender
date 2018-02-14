@@ -30,7 +30,7 @@ def generateAsteroid(game, asteroid_list):
             pos = genRandomPos(WINDOW_WIDTH, WINDOW_HEIGHT)
             pos_x = pos[0]
             altitude = pos[1]
-            size = random.randint(game.asteroid_size_range[0], game.asteroid_size_range[1])
+            size = 10 * random.randint(game.asteroid_size_range[0], game.asteroid_size_range[1])
             color = genRandomGray()
             asteroid = Asteroid(pos_x, altitude, size, game, color)
             asteroid_list.add(asteroid)

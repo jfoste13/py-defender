@@ -10,7 +10,7 @@ def main():
     # handles all gameplay related variables
     game = GameVariables(True)
     game.max_asteroids = 20
-    game.asteroid_size_range = [20, 50]
+    game.asteroid_size_range = [2, 5]
     game.gravity = .05
     game.ground_level = 10
     game.asteroid_spawn_cooldown = 30
@@ -82,9 +82,16 @@ def main():
         for projectile in projectile_list:
             projectile.update()
         for asteroid in asteroid_list:
+            for projectile in projectile_list:
+                if pygame.sprite.collide_rect(asteroid, projectile):
+                    asteroid.laser_contact = True
+                    projectile_list.remove(projectile)
             asteroid.update()
-            if asteroid.ground_contact:
+            if asteroid.ground_contact or asteroid.destroyed:
                 asteroid_list.remove(asteroid)
+            if asteroid.laser_contact:
+                asteroid.size -= 20
+                asteroid.laser_contact = False
 
         game, asteroid_list = generateAsteroid(game, asteroid_list)
 
