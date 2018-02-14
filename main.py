@@ -10,9 +10,8 @@ def main():
     game = GameVariables(True)
     game.max_asteroids = 10
     game.asteroid_size_range = [20, 50]
-    game.asteroid_speed_range = [1, 3]
     game.gravity = .05
-    game.ground_level = 10
+    game.ground_level = 0
 
     # holds a bunch of asteroids
     asteroid_list = pygame.sprite.Group()
@@ -34,6 +33,8 @@ def main():
         ### LOGIC ###
         for asteroid in asteroid_list:
             asteroid.update()
+            if asteroid.ground_contact:
+                asteroid_list.remove(asteroid)
         populateAsteroids(game, asteroid_list)
         ### DRAWING ###
         screen.fill(BLACK)

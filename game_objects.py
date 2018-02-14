@@ -1,21 +1,20 @@
 import pygame, helper
 
 class Asteroid(pygame.sprite.Sprite):
-    def __init__(self, posx, posy, size, speed, game, color):
+    def __init__(self, posx, altitude, size, game, color):
         super().__init__()
 
         self.game = game
 
         self.posx = posx
-        self.posy = posy
+        self.altitude = altitude
         self.size = size
-        self.speed = speed
         self.mass = self.size / game.asteroid_size_range[1]
 
+        self.ground_contact = False
 
-        #!!!! Is this the best way??? Figure out a good way to use altitude !!!!#
-        self.altitude = helper.WINDOW_HEIGHT - posy
         self.velocity = 0
+        self.terminal_velocity = -10
         self.acceleration = 0
 
         self.color = color
@@ -24,13 +23,21 @@ class Asteroid(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
         self.rect.x = posx
-        self.rect.y = posy
+        #!!!!! FIGURE OUT WHY 80 WORKS !!!!!#
+        self.rect.y = helper.altitudeToPixels(self.altitude) - self.size + 80
+
     def update(self):
         self.altitude = helper.update_altitude(self.altitude, self.velocity, self.game.ground_level)
-        self.velocity = helper.update_velocity(self.velocity, self.acceleration)
+        self.velocity = helper.update_velocity(self.velocity, self.acceleration, self.terminal_velocity)
         self.acceleration = helper.update_acceleration(self.game.gravity, self.mass)
-        self.posy = helper.WINDOW_HEIGHT - self.altitude
-        self.rect.y = self.posy
+        self.rect.y = helper.altitudeToPixels(self.altitude) - self.size + 80
+        self.ground_contact = self.groundContact()
+
+    def groundContact(self):
+        if self.altitude == 0:
+            return True
+        else:
+            return False
 
 
 class GameVariables:
