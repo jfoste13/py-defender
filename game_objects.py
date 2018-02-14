@@ -1,5 +1,22 @@
 import pygame, helper, math
 
+
+class LaserBullet(pygame.sprite.Sprite):
+    def __init__(self, game, posx, altitude, slope):
+        super().__init__()
+        self.game = game
+        self.posx = posx
+        self.altitude = altitude
+        self.slope = [int(slope[0] / 10), int(slope[1] / 10)]
+        self.image = pygame.Surface([2, 2])
+        self.image.fill(helper.RED)
+        self.rect = self.image.get_rect()
+        self.rect.x = posx
+        self.rect.y = helper.altitudeToPixels(self.altitude)
+    def update(self):
+        self.altitude = self.altitude + self.slope[0]
+        self.rect.x += self.slope[1]
+        self.rect.y = helper.altitudeToPixels(self.altitude)
 class Ground(pygame.sprite.Sprite):
     def __init__(self, game, color):
         super().__init__()
@@ -51,12 +68,19 @@ class PlayerTurretArm(pygame.sprite.Sprite):
         self.endy = self.basey + math.sin(self.angle) * self.length
         self.endpoint = (self.endx, self.endy)
         self.rate = 0
+        self.rise = -(self.endy - self.basey)
+        self.run = self.endx - self.basex
+        self.slope = [self.rise, self.run]
     def update_arm_pos(self):
         self.endx = self.basex + math.cos(self.angle) * self.length
         self.endy = self.basey + math.sin(self.angle) * self.length
         self.endpoint = (self.endx, self.endy)
     def update_angle(self):
         self.angle += self.rate
+    def update_slope(self):
+        self.rise = -(self.endy - self.basey)
+        self.run = self.endx - self.basex
+        self.slope = [self.rise, self.run]
 
 
 class Asteroid(pygame.sprite.Sprite):

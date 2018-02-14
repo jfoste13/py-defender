@@ -9,11 +9,11 @@ def main():
 
     # handles all gameplay related variables
     game = GameVariables(True)
-    game.max_asteroids = 10
+    game.max_asteroids = 20
     game.asteroid_size_range = [20, 50]
-    game.gravity = .025
+    game.gravity = .05
     game.ground_level = 10
-    game.asteroid_spawn_cooldown = 60
+    game.asteroid_spawn_cooldown = 30
     game.asteroid_spawn_counter = 0
 
     # holds a bunch of asteroids
@@ -32,11 +32,18 @@ def main():
     player_list.add(player_turret_main)
     player_list.add(player_base_main)
 
+    # holds projectiles
+    projectile_list = pygame.sprite.Group()
+    test = LaserBullet(game, 10, 500, [0, 10])
+    projectile_list.add(test)
+
+
     # holds everything that needs to be drawn
     draw_list = []
     draw_list.append(player_list)
     draw_list.append(asteroid_list)
     draw_list.append(terrain_list)
+    draw_list.append(projectile_list)
 
 
     # everything is drawn to this surface
@@ -48,9 +55,10 @@ def main():
     while game.playing:
 
 
-        print(player_turret_arm.angle)
+        print(player_turret_arm.slope)
 
         ### INPUT ###
+        #!!!!! MAKE MORE FLUID LATER !!!!!#
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -59,6 +67,9 @@ def main():
                     player_turret_arm.rate = -.05
                 elif event.key == K_d:
                     player_turret_arm.rate = .05
+                elif event.key == K_s:
+                    laser = LaserBullet(game, player_turret_arm.endpoint[0], altitudeToPixels(player_turret_arm.endpoint[1]), player_turret_arm.slope)
+                    projectile_list.add(laser)
             elif event.type == pygame.KEYUP:
                 if event.key == K_a or event.key == K_d:
                     player_turret_arm.rate = 0
@@ -67,6 +78,9 @@ def main():
         ### LOGIC ###
         player_turret_arm.update_arm_pos()
         player_turret_arm.update_angle()
+        player_turret_arm.update_slope()
+        for projectile in projectile_list:
+            projectile.update()
         for asteroid in asteroid_list:
             asteroid.update()
             if asteroid.ground_contact:
