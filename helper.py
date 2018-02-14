@@ -5,11 +5,12 @@ from game_objects import *
 
 WINDOW_HEIGHT = 720
 WINDOW_WIDTH = 1080
-TICK_RATE = 30
+TICK_RATE = 20
 WORLD_SCALE = 5
 
 ### COLORS ###
 BLACK = [0, 0, 0]
+GRAY = [200, 200, 200]
 WHITE = [255, 255, 255]
 RED = [255, 0, 0]
 GREEN = [0, 255, 0]
@@ -23,9 +24,9 @@ def altitudeToPixels(altitude):
 
 def generateAsteroid(game, asteroid_list):
     if game.asteroid_spawn_counter >= game.asteroid_spawn_cooldown:
-        game.asteroid_spawn_counter = 0
         if len(asteroid_list) < game.max_asteroids:
-            # generate some asteroids
+            # generate an asteroid
+            game.asteroid_spawn_counter = 0
             pos = genRandomPos(WINDOW_WIDTH, WINDOW_HEIGHT)
             pos_x = pos[0]
             altitude = pos[1]
