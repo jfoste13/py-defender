@@ -14,7 +14,7 @@ class Asteroid(pygame.sprite.Sprite):
         self.ground_contact = False
 
         self.velocity = 0
-        self.terminal_velocity = -10
+        self.terminal_velocity = -1 * (size / 8)
         self.acceleration = 0
 
         self.color = color
@@ -34,7 +34,7 @@ class Asteroid(pygame.sprite.Sprite):
         self.ground_contact = self.groundContact()
 
     def groundContact(self):
-        if self.altitude == 0:
+        if self.altitude == self.game.ground_level:
             return True
         else:
             return False

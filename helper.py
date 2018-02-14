@@ -36,7 +36,7 @@ def populateAsteroids(game, asteroid_list):
 def genRandomPos(x_range, y_range):
     #!!!! FIX LATER TO MAKE SURE ASTEROIDS STAY WITHIN BOUNDS !!!!#
     #!!!! FIX LATER TO ENSURE ASTEROIDS DON'T SPAWN WITHIN OTHER ASTEROIDS !!!!$
-    rand_x = random.randint(1, x_range)
+    rand_x = random.randint(x_range / 15, x_range - x_range / 15)
     altitude = random.randint(int(y_range *.8), y_range)
     return(rand_x, altitude)
 

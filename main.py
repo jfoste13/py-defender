@@ -34,8 +34,7 @@ def main():
         for asteroid in asteroid_list:
             asteroid.update()
             if asteroid.ground_contact:
-                #asteroid_list.remove(asteroid)
-                pass
+                asteroid_list.remove(asteroid)
         populateAsteroids(game, asteroid_list)
         ### DRAWING ###
         screen.fill(BLACK)
