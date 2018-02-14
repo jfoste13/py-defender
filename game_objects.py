@@ -24,13 +24,13 @@ class Asteroid(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = posx
         #!!!!! FIGURE OUT WHY 80 WORKS !!!!!#
-        self.rect.y = helper.altitudeToPixels(self.altitude) - self.size + 80
+        self.rect.y = helper.altitudeToPixels(self.altitude) - self.size
 
     def update(self):
         self.altitude = helper.update_altitude(self.altitude, self.velocity, self.game.ground_level)
         self.velocity = helper.update_velocity(self.velocity, self.acceleration, self.terminal_velocity)
         self.acceleration = helper.update_acceleration(self.game.gravity, self.mass)
-        self.rect.y = helper.altitudeToPixels(self.altitude) - self.size + 80
+        self.rect.y = helper.altitudeToPixels(self.altitude) - self.size
         self.ground_contact = self.groundContact()
 
     def groundContact(self):

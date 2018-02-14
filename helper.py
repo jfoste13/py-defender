@@ -3,7 +3,7 @@ from game_objects import *
 
 ### SYSTEM VARIABLES ###
 
-WINDOW_HEIGHT = 640
+WINDOW_HEIGHT = 720
 WINDOW_WIDTH = 720
 TICK_RATE = 15
 WORLD_SCALE = 5
