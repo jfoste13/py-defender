@@ -4,8 +4,8 @@ from game_objects import *
 ### SYSTEM VARIABLES ###
 
 WINDOW_HEIGHT = 720
-WINDOW_WIDTH = 720
-TICK_RATE = 15
+WINDOW_WIDTH = 1080
+TICK_RATE = 30
 WORLD_SCALE = 5
 
 ### COLORS ###
@@ -21,24 +21,27 @@ YELLOW = [255, 255, 0]
 def altitudeToPixels(altitude):
     return WINDOW_HEIGHT - altitude
 
-def populateAsteroids(game, asteroid_list):
-    while len(asteroid_list) < game.max_asteroids:
-        # generate some asteroids
-        pos = genRandomPos(WINDOW_WIDTH, WINDOW_HEIGHT)
-        pos_x = pos[0]
-        altitude = pos[1]
-        size = random.randint(game.asteroid_size_range[0], game.asteroid_size_range[1])
-        color = genRandomGray()
-        asteroid = Asteroid(pos_x, altitude, size, game, color)
-        asteroid_list.add(asteroid)
-    return asteroid_list
+def generateAsteroid(game, asteroid_list):
+    if game.asteroid_spawn_counter >= game.asteroid_spawn_cooldown:
+        game.asteroid_spawn_counter = 0
+        if len(asteroid_list) < game.max_asteroids:
+            # generate some asteroids
+            pos = genRandomPos(WINDOW_WIDTH, WINDOW_HEIGHT)
+            pos_x = pos[0]
+            altitude = pos[1]
+            size = random.randint(game.asteroid_size_range[0], game.asteroid_size_range[1])
+            color = genRandomGray()
+            asteroid = Asteroid(pos_x, altitude, size, game, color)
+            asteroid_list.add(asteroid)
+    else:
+        game.asteroid_spawn_counter += 1
+    return game, asteroid_list
 
-def genRandomPos(x_range, y_range):
+def genRandomPos(x_range, ceiling):
     #!!!! FIX LATER TO MAKE SURE ASTEROIDS STAY WITHIN BOUNDS !!!!#
     #!!!! FIX LATER TO ENSURE ASTEROIDS DON'T SPAWN WITHIN OTHER ASTEROIDS !!!!$
     rand_x = random.randint(x_range / 15, x_range - x_range / 15)
-    altitude = random.randint(int(y_range *.8), y_range)
-    return(rand_x, altitude)
+    return(rand_x, ceiling - 20)
 
 def genRandomGray():
     val = random.randint(150, 255)

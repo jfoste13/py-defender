@@ -1,5 +1,16 @@
 import pygame, helper
 
+class Ground(pygame.sprite.Sprite):
+    def __init__(self, game, color):
+        super().__init__()
+        self.game = game
+
+        self.color = color
+        self.image = pygame.Surface([helper.WINDOW_WIDTH, self.game.ground_level])
+        self.image.fill(self.color)
+        self.rect = self.image.get_rect()
+        self.rect.y = helper.altitudeToPixels(self.game.ground_level)
+
 class Asteroid(pygame.sprite.Sprite):
     def __init__(self, posx, altitude, size, game, color):
         super().__init__()
@@ -14,7 +25,7 @@ class Asteroid(pygame.sprite.Sprite):
         self.ground_contact = False
 
         self.velocity = 0
-        self.terminal_velocity = -1 * (size / 8)
+        self.terminal_velocity = -1 * (size / 16)
         self.acceleration = 0
 
         self.color = color
@@ -23,7 +34,6 @@ class Asteroid(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
         self.rect.x = posx
-        #!!!!! FIGURE OUT WHY 80 WORKS !!!!!#
         self.rect.y = helper.altitudeToPixels(self.altitude) - self.size
 
     def update(self):
@@ -48,3 +58,5 @@ class GameVariables:
         self.asteroid_speed_range = []
         self.gravity = 0
         self.ground_level = 0
+        self.asteroid_spawn_cooldown = 0
+        self.asteroid_spawn_Counter = 0
