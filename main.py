@@ -9,9 +9,9 @@ def main():
 
     # handles all gameplay related variables
     game = GameVariables(True)
-    game.max_asteroids = 20
-    game.asteroid_size_range = [6, 12]
-    game.gravity = .05
+    game.max_asteroids = 40
+    game.asteroid_size_range = [5, 20]
+    game.gravity = .03
     game.ground_level = 10
     game.asteroid_spawn_cooldown = 30
     game.asteroid_spawn_counter = 0
